@@ -13,7 +13,7 @@ export class Publisher {
     this.gitManager = gitManager
   }
 
-  async processFile(filePath: string): Promise<void> {
+  async processFile(filePath: string): Promise<boolean> {
     try {
       // Read file content
       const content = await fs.readFile(filePath, 'utf8')
@@ -22,7 +22,7 @@ export class Publisher {
       const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/)
       if (!frontmatterMatch) {
         console.log('No frontmatter found, skipping:', filePath)
-        return
+        return false
       }
 
       const frontmatter = parseYaml(frontmatterMatch[1])
@@ -30,12 +30,17 @@ export class Publisher {
       // Check if published
       if (frontmatter.published === true) {
         await this.copyToRepo(filePath, frontmatter)
+        return true // File was published, should commit
       } else if (frontmatter.published === false) {
-        await this.removeFromRepo(filePath)
+        const removed = await this.removeFromRepo(filePath)
+        return removed // File was unpublished, should commit if it existed
       }
+
+      return false
     } catch (error) {
       console.error('Error processing file:', error)
       new Notice('Error: Failed to process file. Check console for details.')
+      return false
     }
   }
 
@@ -69,9 +74,9 @@ export class Publisher {
     }
   }
 
-  private async removeFromRepo(sourceFile: string): Promise<void> {
+  private async removeFromRepo(sourceFile: string): Promise<boolean> {
     if (!this.settings.repoPath) {
-      return
+      return false
     }
 
     const fileName = path.basename(sourceFile)
@@ -84,7 +89,7 @@ export class Publisher {
         await fs.access(targetFile)
         await fs.unlink(targetFile)
         console.log(`Removed: ${targetFile}`)
-        return
+        return true // File was removed
       } catch (error) {
         // File doesn't exist in this category, try next
         continue
@@ -92,5 +97,6 @@ export class Publisher {
     }
 
     console.log('File not found in repo, nothing to remove')
+    return false // No file was removed
   }
 }

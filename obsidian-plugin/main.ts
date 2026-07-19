@@ -107,12 +107,14 @@ tags: []
 
     try {
       // Process file (copy or remove)
-      await this.publisher.processFile(filePath)
+      const shouldCommit = await this.publisher.processFile(filePath)
 
-      // Commit and push if auto-commit enabled
-      if (this.settings.autoCommit) {
+      // Only commit and push if something actually changed
+      if (shouldCommit && this.settings.autoCommit) {
         const commitMessage = this.settings.commitTemplate.replace('{filename}', file.basename)
         await this.gitManager.commitAndPush(commitMessage)
+      } else if (!shouldCommit) {
+        console.log('No changes to publish')
       }
     } catch (error) {
       console.error('Error processing file change:', error)
