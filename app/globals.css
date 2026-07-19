@@ -15,9 +15,20 @@
     background: #B8A481;
     color: #000;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
-@layer utilities {
+@layer components {
   .reading-content {
     @apply max-w-reading mx-auto px-8 py-16;
   }
@@ -62,17 +73,6 @@
 
   .reading-content li {
     @apply mb-2;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
   }
 
   @media (max-width: 640px) {
