@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import fs from 'fs/promises'
-import path from 'path'
+import { kv } from '@vercel/kv'
 
 interface Vote {
   slug: string
@@ -12,25 +11,27 @@ interface Vote {
   city?: string
 }
 
-interface VoteData {
-  votes: Vote[]
-}
-
-const votesPath = path.join(process.cwd(), 'data', 'votes.json')
-
-async function getVotes(): Promise<VoteData> {
+async function getVotesForSlug(slug: string): Promise<{ likes: number; dislikes: number }> {
   try {
-    const data = await fs.readFile(votesPath, 'utf8')
-    return JSON.parse(data)
+    const likes = await kv.get<number>(`votes:${slug}:likes`) || 0
+    const dislikes = await kv.get<number>(`votes:${slug}:dislikes`) || 0
+    return { likes, dislikes }
   } catch (error) {
-    return { votes: [] }
+    return { likes: 0, dislikes: 0 }
   }
 }
 
-async function saveVotes(data: VoteData): Promise<void> {
-  const dataDir = path.dirname(votesPath)
-  await fs.mkdir(dataDir, { recursive: true })
-  await fs.writeFile(votesPath, JSON.stringify(data, null, 2))
+async function incrementVote(slug: string, voteType: 'like' | 'dislike'): Promise<void> {
+  const key = `votes:${slug}:${voteType}s`
+  await kv.incr(key)
+}
+
+async function saveVoteLog(vote: Vote): Promise<void> {
+  try {
+    await kv.lpush('votes:log', vote)
+  } catch (error) {
+    console.error('Failed to log vote:', error)
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
     const country = request.headers.get('x-vercel-ip-country')
     const city = request.headers.get('x-vercel-ip-city')
 
-    const newVote: Vote = {
+    const voteLog: Vote = {
       slug,
       vote,
       timestamp: new Date().toISOString(),
@@ -60,16 +61,13 @@ export async function POST(request: NextRequest) {
       ...(city && { city }),
     }
 
-    const data = await getVotes()
-    data.votes.push(newVote)
-    await saveVotes(data)
+    // Increment counter and save log
+    await incrementVote(slug, vote)
+    await saveVoteLog(voteLog)
 
-    // Return counts for this slug
-    const slugVotes = data.votes.filter(v => v.slug === slug)
-    const likes = slugVotes.filter(v => v.vote === 'like').length
-    const dislikes = slugVotes.filter(v => v.vote === 'dislike').length
-
-    return NextResponse.json({ likes, dislikes })
+    // Return updated counts
+    const counts = await getVotesForSlug(slug)
+    return NextResponse.json(counts)
   } catch (error) {
     console.error('Vote error:', error)
     return NextResponse.json({ error: 'Failed to record vote' }, { status: 500 })
@@ -85,12 +83,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Missing slug' }, { status: 400 })
     }
 
-    const data = await getVotes()
-    const slugVotes = data.votes.filter(v => v.slug === slug)
-    const likes = slugVotes.filter(v => v.vote === 'like').length
-    const dislikes = slugVotes.filter(v => v.vote === 'dislike').length
-
-    return NextResponse.json({ likes, dislikes })
+    const counts = await getVotesForSlug(slug)
+    return NextResponse.json(counts)
   } catch (error) {
     console.error('Get votes error:', error)
     return NextResponse.json({ error: 'Failed to get votes' }, { status: 500 })
