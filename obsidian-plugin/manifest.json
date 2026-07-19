@@ -1,0 +1,10 @@
+{
+  "id": "shipyard-publisher",
+  "name": "Shipyard Publisher",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "Automatically publish notes to The Shipyard writing site",
+  "author": "The Shipyard",
+  "authorUrl": "https://theshipyard.cc",
+  "isDesktopOnly": true
+}
