@@ -11,8 +11,9 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const content = await getContentBySlug(params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const content = await getContentBySlug(slug)
 
   if (!content) {
     return {
@@ -26,8 +27,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function ReadingPage({ params }: { params: { slug: string } }) {
-  const content = await getContentBySlug(params.slug)
+export default async function ReadingPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const content = await getContentBySlug(slug)
 
   if (!content) {
     notFound()
@@ -35,7 +37,7 @@ export default async function ReadingPage({ params }: { params: { slug: string }
 
   // Get all content to find prev/next
   const allContent = await getAllContent()
-  const currentIndex = allContent.findIndex((item) => item.slug === params.slug)
+  const currentIndex = allContent.findIndex((item) => item.slug === slug)
   const prevSlug = currentIndex < allContent.length - 1 ? allContent[currentIndex + 1].slug : null
   const nextSlug = currentIndex > 0 ? allContent[currentIndex - 1].slug : null
 
