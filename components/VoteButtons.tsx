@@ -13,20 +13,29 @@ export default function VoteButtons({ slug }: VoteButtonsProps) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    const fetchCounts = () => {
+      fetch(`/api/vote?slug=${slug}`)
+        .then(res => res.json())
+        .then(data => {
+          setLikes(data.likes || 0)
+          setDislikes(data.dislikes || 0)
+        })
+        .catch(() => {})
+    }
+
     // Load counts on mount
-    fetch(`/api/vote?slug=${slug}`)
-      .then(res => res.json())
-      .then(data => {
-        setLikes(data.likes || 0)
-        setDislikes(data.dislikes || 0)
-      })
-      .catch(() => {})
+    fetchCounts()
+
+    // Poll for updates every 10 seconds for live counts
+    const interval = setInterval(fetchCounts, 10000)
 
     // Check if user already voted (localStorage)
     const storedVote = localStorage.getItem(`vote_${slug}`)
     if (storedVote) {
       setVoted(storedVote as 'like' | 'dislike')
     }
+
+    return () => clearInterval(interval)
   }, [slug])
 
   const handleVote = async (vote: 'like' | 'dislike') => {
