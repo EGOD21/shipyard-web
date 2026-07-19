@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function Header() {
   return (
-    <header className="fixed top-3 left-6 md:left-8 z-50">
+    <header className="fixed top-2 left-6 md:left-8 z-50">
       <Link href="/" className="block transition-opacity hover:opacity-70">
         <Image
           src="/images/anchor-logo.png"
