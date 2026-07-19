@@ -3,6 +3,7 @@ import Header from '@/components/Header'
 import FloatingNav from '@/components/FloatingNav'
 import WaveTexture from '@/components/WaveTexture'
 import VoteButtons from '@/components/VoteButtons'
+import DonationButton from '@/components/DonationButton'
 import { getContentBySlug, getAllContent } from '@/lib/content'
 
 export async function generateStaticParams() {
@@ -99,6 +100,7 @@ export default async function ReadingPage({ params }: { params: Promise<{ slug: 
         </article>
 
         <FloatingNav prevSlug={prevSlug} nextSlug={nextSlug} />
+        <DonationButton />
       </div>
     </>
   )

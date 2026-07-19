@@ -39,10 +39,10 @@ export default function FloatingNav({ prevSlug, nextSlug }: FloatingNavProps) {
         )}
 
         <Link
-          href="/archive"
+          href="/basin"
           className="text-brand-black hover:text-brand-tan transition-colors font-body text-sm font-medium"
         >
-          Archive
+          Basin
         </Link>
 
         {nextSlug ? (

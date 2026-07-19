@@ -1,14 +1,15 @@
 import Header from '@/components/Header'
 import WaveTexture from '@/components/WaveTexture'
 import FilterableArchive from '@/components/FilterableArchive'
+import DonationButton from '@/components/DonationButton'
 import { getAllContent } from '@/lib/content'
 
 export const metadata = {
-  title: 'Archive — The Shipyard',
+  title: 'Basin — The Shipyard',
   description: 'All published writing',
 }
 
-export default async function ArchivePage() {
+export default async function BasinPage() {
   const allContent = await getAllContent()
 
   return (
@@ -20,7 +21,7 @@ export default async function ArchivePage() {
 
         <div className="relative z-10 max-w-4xl mx-auto">
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-12 md:mb-16">
-            Archive
+            Basin
           </h1>
 
           {allContent.length === 0 ? (
@@ -32,6 +33,8 @@ export default async function ArchivePage() {
           )}
         </div>
       </div>
+
+      <DonationButton />
     </>
   )
 }

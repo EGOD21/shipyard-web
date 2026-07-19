@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import WaveTexture from '@/components/WaveTexture'
 import HeroBackground from '@/components/HeroBackground'
+import DonationButton from '@/components/DonationButton'
 import { getFeaturedContent } from '@/lib/content'
 import { getSiteConfig } from '@/lib/config'
 
@@ -46,13 +47,15 @@ export default async function HomePage() {
             A space for humans to just be.
           </p>
           <Link
-            href="/archive"
+            href="/basin"
             className="inline-block font-body text-sm text-brand-tan hover:text-white transition-colors"
           >
-            View Archive →
+            View Basin →
           </Link>
         </div>
       </section>
+
+      <DonationButton />
     </>
   )
 }
