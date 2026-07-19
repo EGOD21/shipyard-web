@@ -1,0 +1,16 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Placeholder ship - simple sailboat -->
+  <g stroke="#69867E" stroke-width="2" fill="none">
+    <!-- Hull -->
+    <path d="M 150 200 Q 200 220 250 200 L 250 180 L 150 180 Z" />
+    <!-- Mast -->
+    <line x1="200" y1="180" x2="200" y2="80" />
+    <!-- Main sail -->
+    <path d="M 200 90 L 240 140 L 200 170 Z" />
+    <!-- Jib sail -->
+    <path d="M 200 100 L 160 120 L 200 150 Z" />
+  </g>
+  <text x="200" y="260" font-family="Inter, sans-serif" font-size="12" fill="#767270" text-anchor="middle">
+    Placeholder — user will provide ship SVG
+  </text>
+</svg>
