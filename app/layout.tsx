@@ -1,40 +1,38 @@
-import type { Metadata } from "next";
-import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
-import "./globals.css";
+import { Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google'
+import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-});
+  subsets: ['latin'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
+})
 
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
 const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-ibm-plex-mono",
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-});
+  weight: ['400', '500'],
+  subsets: ['latin'],
+  variable: '--font-ibm-plex-mono',
+  display: 'swap',
+})
 
-export const metadata: Metadata = {
-  title: "The Shipyard Writing Space",
-  description: "A platform for writing and publishing",
-};
+export const metadata = {
+  title: 'The Shipyard',
+  description: 'A writing space',
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body
-        className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable}`}
-      >
-        {children}
-      </body>
+    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${ibmPlexMono.variable}`}>
+      <body>{children}</body>
     </html>
-  );
+  )
 }
