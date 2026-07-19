@@ -1,4 +1,4 @@
-import simpleGit, { SimpleGit, GitError } from 'simple-git'
+import simpleGit, { SimpleGit } from 'simple-git'
 import { Notice } from 'obsidian'
 
 export class GitManager {
