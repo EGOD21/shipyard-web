@@ -6,6 +6,7 @@ export interface ContentMeta {
   excerpt?: string
   tags?: string[]
   featured?: boolean
+  'dg-home'?: boolean
 }
 
 export interface ContentItem extends ContentMeta {

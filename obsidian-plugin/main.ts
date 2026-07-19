@@ -26,6 +26,30 @@ export default class ShipyardPublisher extends Plugin {
       })
     )
 
+    // Add command to insert frontmatter template
+    this.addCommand({
+      id: 'insert-shipyard-frontmatter',
+      name: 'Insert Shipyard frontmatter',
+      editorCallback: (editor) => {
+        const today = new Date().toISOString().split('T')[0]
+        const template = `---
+published: false
+dg-home: false
+title: ""
+date: "${today}"
+type: essay
+excerpt: ""
+tags: []
+---
+
+`
+        editor.replaceSelection(template)
+        // Move cursor to title field
+        const cursor = editor.getCursor()
+        editor.setCursor({ line: cursor.line - 7, ch: 8 })
+      }
+    })
+
     // Add settings tab
     this.addSettingTab(new ShipyardSettingTab(this.app, this))
 

@@ -107,6 +107,10 @@ export async function getContentBySlug(slug: string): Promise<ContentItem | null
 export async function getFeaturedContent(): Promise<ContentItem | null> {
   const allContent = await getAllContent()
 
+  // Find dg-home piece (Digital Garden style)
+  const dgHome = allContent.find(item => item['dg-home'])
+  if (dgHome) return dgHome
+
   // Find featured piece
   const featured = allContent.find(item => item.featured)
   if (featured) return featured
