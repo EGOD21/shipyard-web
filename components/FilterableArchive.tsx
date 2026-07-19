@@ -97,8 +97,8 @@ export default function FilterableArchive({ allContent }: FilterableArchiveProps
       ) : (
         <div className="space-y-12">
           {filteredContent.map((item) => (
-            <article key={item.slug} className="border-t border-black/10 pt-8">
-              <div className="flex items-center gap-4 mb-3">
+            <article key={item.slug} className="border-t border-black/10 pt-6 md:pt-8">
+              <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-3">
                 <span className="text-xs uppercase tracking-brand text-brand-tan font-body">
                   {item.type}
                 </span>
@@ -109,12 +109,12 @@ export default function FilterableArchive({ allContent }: FilterableArchiveProps
                     day: 'numeric',
                   })}
                 </span>
-                <span className="text-xs text-brand-gray font-body">
+                <span className="text-xs text-brand-gray font-body hidden sm:inline">
                   {item.wordCount} words · {item.readingTime} min read
                 </span>
               </div>
 
-              <h2 className="font-display text-2xl md:text-3xl font-medium tracking-tight mb-3">
+              <h2 className="font-display text-xl md:text-2xl lg:text-3xl font-medium tracking-tight mb-3">
                 <Link
                   href={`/${item.slug}`}
                   className="hover:text-brand-tan transition-colors"

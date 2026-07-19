@@ -77,7 +77,26 @@
 
   @media (max-width: 640px) {
     .reading-content {
-      @apply px-8 py-8;
+      @apply px-6 py-6;
+    }
+
+    .reading-content h1 {
+      @apply text-3xl mb-4;
+    }
+
+    .reading-content h2 {
+      @apply text-2xl mb-3;
+    }
+
+    .reading-content h3 {
+      @apply text-xl mb-3;
+    }
+
+    .reading-content p,
+    .reading-content ul,
+    .reading-content ol,
+    .reading-content blockquote {
+      @apply text-base leading-relaxed;
     }
   }
 }

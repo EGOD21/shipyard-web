@@ -7,6 +7,7 @@ export interface ShipyardSettings {
   commitTemplate: string
   debounceDelay: number
   githubPAT: string
+  backgroundMediaUrl: string
 }
 
 export const DEFAULT_SETTINGS: ShipyardSettings = {
@@ -15,6 +16,7 @@ export const DEFAULT_SETTINGS: ShipyardSettings = {
   commitTemplate: 'Update: {filename}',
   debounceDelay: 3000,
   githubPAT: '',
+  backgroundMediaUrl: '',
 }
 
 export class ShipyardSettingTab extends PluginSettingTab {
@@ -99,5 +101,20 @@ export class ShipyardSettingTab extends PluginSettingTab {
         text.inputEl.type = 'password'
         return text
       })
+
+    new Setting(containerEl)
+      .setName('Background media URL')
+      .setDesc('Public URL to .mp4, .gif, or image for homepage background. Leave empty for default.')
+      .addText((text) =>
+        text
+          .setPlaceholder('https://example.com/background.mp4')
+          .setValue(this.plugin.settings.backgroundMediaUrl)
+          .onChange(async (value) => {
+            this.plugin.settings.backgroundMediaUrl = value
+            await this.plugin.saveSettings()
+            // Sync config to repo
+            await this.plugin.syncConfig()
+          })
+      )
   }
 }

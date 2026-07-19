@@ -74,6 +74,33 @@ tags: []
     }
   }
 
+  async syncConfig() {
+    if (!this.settings.repoPath) return
+
+    const fs = require('fs/promises')
+    const path = require('path')
+
+    const config = {
+      backgroundMediaUrl: this.settings.backgroundMediaUrl || '',
+    }
+
+    const configPath = path.join(this.settings.repoPath, 'config', 'site.json')
+    const configDir = path.dirname(configPath)
+
+    try {
+      await fs.mkdir(configDir, { recursive: true })
+      await fs.writeFile(configPath, JSON.stringify(config, null, 2))
+      console.log('Config synced to:', configPath)
+
+      // Auto-commit if enabled
+      if (this.gitManager && this.settings.autoCommit) {
+        await this.gitManager.commitAndPush('Update site configuration')
+      }
+    } catch (error) {
+      console.error('Failed to sync config:', error)
+    }
+  }
+
   initializeManagers() {
     this.gitManager = new GitManager(this.settings.repoPath, this.settings.githubPAT)
     this.publisher = new Publisher(this.settings, this.gitManager)
