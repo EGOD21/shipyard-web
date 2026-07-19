@@ -43,10 +43,11 @@ tags: []
 ---
 
 `
-        editor.replaceSelection(template)
-        // Move cursor to title field
-        const cursor = editor.getCursor()
-        editor.setCursor({ line: cursor.line - 7, ch: 8 })
+        // Insert at beginning of document for proper properties UI
+        editor.setCursor(0, 0)
+        editor.replaceRange(template, { line: 0, ch: 0 })
+        // Move cursor to title value
+        editor.setCursor({ line: 3, ch: 8 })
       }
     })
 
@@ -74,7 +75,7 @@ tags: []
   }
 
   initializeManagers() {
-    this.gitManager = new GitManager(this.settings.repoPath)
+    this.gitManager = new GitManager(this.settings.repoPath, this.settings.githubPAT)
     this.publisher = new Publisher(this.settings, this.gitManager)
   }
 

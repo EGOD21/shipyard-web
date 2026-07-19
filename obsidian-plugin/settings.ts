@@ -6,6 +6,7 @@ export interface ShipyardSettings {
   autoCommit: boolean
   commitTemplate: string
   debounceDelay: number
+  githubPAT: string
 }
 
 export const DEFAULT_SETTINGS: ShipyardSettings = {
@@ -13,6 +14,7 @@ export const DEFAULT_SETTINGS: ShipyardSettings = {
   autoCommit: true,
   commitTemplate: 'Update: {filename}',
   debounceDelay: 3000,
+  githubPAT: '',
 }
 
 export class ShipyardSettingTab extends PluginSettingTab {
@@ -82,5 +84,20 @@ export class ShipyardSettingTab extends PluginSettingTab {
             }
           })
       )
+
+    new Setting(containerEl)
+      .setName('GitHub Personal Access Token')
+      .setDesc('GitHub PAT for pushing changes. Create one at github.com/settings/tokens with "repo" scope.')
+      .addText((text) => {
+        text
+          .setPlaceholder('ghp_xxxxxxxxxxxxxxxxxxxx')
+          .setValue(this.plugin.settings.githubPAT)
+          .onChange(async (value) => {
+            this.plugin.settings.githubPAT = value
+            await this.plugin.saveSettings()
+          })
+        text.inputEl.type = 'password'
+        return text
+      })
   }
 }

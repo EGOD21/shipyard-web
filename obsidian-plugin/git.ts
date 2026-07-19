@@ -4,9 +4,11 @@ import { Notice } from 'obsidian'
 export class GitManager {
   private git: SimpleGit
   private repoPath: string
+  private githubPAT: string
 
-  constructor(repoPath: string) {
+  constructor(repoPath: string, githubPAT: string = '') {
     this.repoPath = repoPath
+    this.githubPAT = githubPAT
     this.git = simpleGit(repoPath)
   }
 
@@ -41,6 +43,22 @@ export class GitManager {
 
       // Commit
       await this.git.commit(message)
+
+      // Configure remote URL with PAT if provided
+      if (this.githubPAT) {
+        const remotes = await this.git.getRemotes(true)
+        const origin = remotes.find(r => r.name === 'origin')
+
+        if (origin && origin.refs.push) {
+          // Extract repo info and rebuild URL with PAT
+          const match = origin.refs.push.match(/github\.com[:/](.+?)\.git/)
+          if (match) {
+            const repoPath = match[1]
+            const authUrl = `https://${this.githubPAT}@github.com/${repoPath}.git`
+            await this.git.remote(['set-url', 'origin', authUrl])
+          }
+        }
+      }
 
       // Push with timeout
       await Promise.race([
