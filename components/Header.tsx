@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import UserMenu from './UserMenu'
 
 export default function Header() {
   return (
@@ -14,6 +15,7 @@ export default function Header() {
           priority
         />
       </Link>
+      <UserMenu />
     </header>
   )
 }

@@ -4,6 +4,7 @@ import FloatingNav from '@/components/FloatingNav'
 import WaveTexture from '@/components/WaveTexture'
 import VoteButtons from '@/components/VoteButtons'
 import DonationButton from '@/components/DonationButton'
+import CommentsSection from '@/components/CommentsSection'
 import { getContentBySlug, getAllContent } from '@/lib/content'
 
 export async function generateStaticParams() {
@@ -96,6 +97,9 @@ export default async function ReadingPage({ params }: { params: Promise<{ slug: 
 
             {/* Vote buttons */}
             <VoteButtons slug={content.slug} />
+
+            {/* Comments */}
+            <CommentsSection slug={content.slug} />
           </div>
         </article>
 

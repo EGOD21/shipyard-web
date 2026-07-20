@@ -15,3 +15,20 @@ export interface ContentItem extends ContentMeta {
   wordCount: number
   readingTime: number
 }
+
+export interface User {
+  id: string
+  email: string
+  passwordHash: string
+  createdAt: string
+}
+
+export interface Comment {
+  id: string
+  slug: string
+  userId: string
+  email: string
+  text: string
+  createdAt: string
+  updatedAt?: string
+}
