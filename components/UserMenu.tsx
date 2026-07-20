@@ -5,6 +5,7 @@ import AuthModal from './AuthModal'
 
 interface User {
   id: string
+  username: string
   email: string
 }
 
@@ -42,10 +43,10 @@ export default function UserMenu() {
 
   return (
     <>
-      <div className="fixed top-2 right-6 md:right-8 z-50">
+      <div className="fixed top-2 right-6 md:right-8 z-50 flex items-center h-10">
         {user ? (
           <div className="flex items-center gap-3">
-            <span className="font-body text-sm text-brand-gray">{user.email}</span>
+            <span className="font-body text-sm text-brand-gray">{user.username}</span>
             <button
               onClick={handleLogout}
               className="font-body text-sm text-brand-sage hover:text-brand-tan transition-colors"

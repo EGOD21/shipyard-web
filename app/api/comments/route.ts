@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({});
     const session = await getIronSession<SessionData>(request, response, sessionOptions);
 
-    if (!session.userId || !session.email) {
+    if (!session.userId || !session.username) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       id,
       slug,
       userId: session.userId,
-      email: session.email,
+      username: session.username,
       text,
       createdAt: new Date().toISOString(),
     };

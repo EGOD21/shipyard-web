@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 
 interface User {
   id: string
+  username: string
   email: string
 }
 
@@ -11,7 +12,7 @@ interface Comment {
   id: string
   slug: string
   userId: string
-  email: string
+  username: string
   text: string
   createdAt: string
   updatedAt?: string
@@ -174,7 +175,7 @@ export default function CommentsSection({ slug }: CommentsSectionProps) {
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <span className="font-body text-sm font-medium text-brand-gray">
-                    {comment.email}
+                    {comment.username}
                   </span>
                   <span className="font-body text-xs text-brand-gray/60 ml-2">
                     {new Date(comment.createdAt).toLocaleDateString('en-US', {

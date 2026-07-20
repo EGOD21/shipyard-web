@@ -18,6 +18,7 @@ export interface ContentItem extends ContentMeta {
 
 export interface User {
   id: string
+  username: string
   email: string
   passwordHash: string
   createdAt: string
@@ -27,7 +28,7 @@ export interface Comment {
   id: string
   slug: string
   userId: string
-  email: string
+  username: string
   text: string
   createdAt: string
   updatedAt?: string

@@ -14,5 +14,6 @@ export const sessionOptions: SessionOptions = {
 
 export interface SessionData {
   userId: string;
+  username: string;
   email: string;
 }

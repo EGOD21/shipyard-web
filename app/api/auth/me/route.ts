@@ -7,8 +7,8 @@ export async function GET(request: NextRequest) {
     const response = NextResponse.json({});
     const session = await getIronSession<SessionData>(request, response, sessionOptions);
 
-    if (session.userId && session.email) {
-      return NextResponse.json({ user: { id: session.userId, email: session.email } });
+    if (session.userId && session.username && session.email) {
+      return NextResponse.json({ user: { id: session.userId, username: session.username, email: session.email } });
     }
 
     return NextResponse.json({ user: null });

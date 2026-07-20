@@ -38,11 +38,12 @@ export default async function ReadingPage({ params }: { params: Promise<{ slug: 
     notFound()
   }
 
-  // Get all content to find prev/next
+  // Get all content to find prev/next (array is sorted newest-first)
   const allContent = await getAllContent()
   const currentIndex = allContent.findIndex((item) => item.slug === slug)
-  const prevSlug = currentIndex < allContent.length - 1 ? allContent[currentIndex + 1].slug : null
-  const nextSlug = currentIndex > 0 ? allContent[currentIndex - 1].slug : null
+  // Previous = newer article (lower index), Next = older article (higher index)
+  const prevSlug = currentIndex > 0 ? allContent[currentIndex - 1].slug : null
+  const nextSlug = currentIndex < allContent.length - 1 ? allContent[currentIndex + 1].slug : null
 
   return (
     <>

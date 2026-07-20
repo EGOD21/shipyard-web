@@ -23,9 +23,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Create session
-    const response = NextResponse.json({ success: true, user: { id: user.id, email: user.email } });
+    const response = NextResponse.json({ success: true, user: { id: user.id, username: user.username, email: user.email } });
     const session = await getIronSession<SessionData>(request, response, sessionOptions);
     session.userId = user.id;
+    session.username = user.username;
     session.email = user.email;
     await session.save();
 

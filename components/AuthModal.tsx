@@ -10,6 +10,7 @@ interface AuthModalProps {
 
 export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
   const [mode, setMode] = useState<'login' | 'signup'>('login')
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -34,15 +35,20 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
     try {
       const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/signup'
+      const body = mode === 'login'
+        ? { email, password }
+        : { username, email, password }
+
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(body),
       })
 
       const data = await res.json()
 
       if (res.ok) {
+        setUsername('')
         setEmail('')
         setPassword('')
         onSuccess()
@@ -98,6 +104,25 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {mode === 'signup' && (
+            <div>
+              <label htmlFor="username" className="block font-body text-sm text-brand-gray mb-1">
+                Username (3-20 characters)
+              </label>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                minLength={3}
+                maxLength={20}
+                pattern="[a-zA-Z0-9_]+"
+                className="w-full px-3 py-2 bg-white border border-brand-tan/20 rounded font-body text-sm focus:outline-none focus:border-brand-sage"
+              />
+            </div>
+          )}
+
           <div>
             <label htmlFor="email" className="block font-body text-sm text-brand-gray mb-1">
               Email
