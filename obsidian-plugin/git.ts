@@ -33,6 +33,7 @@ export class GitManager {
 
       // Add all changes in content directory
       await this.git.add('content/*')
+      await this.git.add('config/*')
 
       // Check if there are changes to commit
       const status = await this.git.status()
